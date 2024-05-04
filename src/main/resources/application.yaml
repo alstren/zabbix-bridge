@@ -1,0 +1,48 @@
+server:
+  port: ${SERVER_PORT:29339}
+  http2.enabled: true
+  shutdown: graceful
+  servlet.context-path: /api
+  tomcat:
+    accesslog.enabled: false
+    connection-timeout: 50
+
+spring:
+  security.user:
+    name: ${SPRING_SECURITY_USER_NAME:zabbix}
+    password: ${SPRING_SECURITY_USER_PASSWORD:zabbix}
+  lifecycle.timeout-per-shutdown-phase: 10s
+  application.name: @project.name@
+
+logging:
+  file.name: ${LOGGING_FILE_NAME:zabbix-bridge.log}
+  pattern.dateformat: YYYY-MM-dd HH:mm:ss
+  level:
+    ru.krsmon: ${LOGGING_LEVEL_RU_KRSMON:INFO}
+    org.apache.sshd: OFF
+
+management:
+  info.env.enabled: true
+  endpoints.web:
+    base-path: /metrics
+    exposure.include: info, health
+  endpoint.health:
+    show-details: when_authorized
+    show-components: when_authorized
+
+external:
+  zabbix:
+    url: ${ZABBIX-URL:https://localhost/api_jsonrpc.php}
+    token: ${ZABBIX_TOKEN:stub}
+  bots:
+    adminId: ${BOTS_ADMIN_ID:0}
+    bridgeNotifyBot:
+      enabled: ${BRIDGE_NOTIFY_BOT_ENABLED:false}
+      botToken: ${BRIDGE_NOTIFY_BOT_TOKEN:stub}
+      botUsername: ${BRIDGE_NOTIFY_BOT_USERNAME:stub}
+
+info:
+  application:
+    name: @project.name@
+    description: @project.description@
+    version: @project.version@
