@@ -46,7 +46,7 @@ public abstract class AbstractRouterClient implements RouterClient {
         return SurveyResponse.builder()
                 .code(isSuccess ? errors.isEmpty() ? 200 : 201 : 503)
                 .message(isSuccess ? errors.isEmpty() ? "Success" : errors.toString() : "HOST OFFLINE")
-                .result(isSuccess ? resultMap : errorResult(OFFLINE))
+                .result(isSuccess ? resultMap : errorResult(OFFLINE, resultMap))
                 .discovery(arpMap)
                 .checkedAt(formatter.format(now()))
                 .build();
