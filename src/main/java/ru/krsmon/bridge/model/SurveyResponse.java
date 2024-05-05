@@ -19,11 +19,15 @@ public class SurveyResponse {
     private Map<String, DeviceStatus> result;
     private String checkedAt;
 
-    public static Map<String, DeviceStatus> errorResult(@NonNull DeviceStatus.Status status) {
+    public static Map<String, DeviceStatus> errorResult(@NonNull DeviceStatus.Status status, Map<String, DeviceStatus> resultMap) {
         return Stream.of("ROUTER", "DVR1", "DVR2", "CAM1", "CAM2", "KEEPER1", "KEEPER2", "HOTSPOT1", "TERMINAL1", "TERMINAL2", "KKT1", "KKT2")
                 .map(key -> Map.entry(
                         key,
-                        new DeviceStatus(status.getCode(), "n/a")))
+                        new DeviceStatus(
+                                status.getCode(),
+                                resultMap.containsKey(key)
+                                        ? resultMap.get(key).message()
+                                        : "n/a")))
                 .collect(toMap(Map.Entry::getKey, Map.Entry::getValue, (firstVal, secondVal) -> firstVal));
     }
 
